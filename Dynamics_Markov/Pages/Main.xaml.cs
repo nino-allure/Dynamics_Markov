@@ -21,6 +21,7 @@ namespace Dynamics_Markov.Pages
     /// </summary>
     public partial class Main : Page
     {
+        public MainWindow mainWindow;
         public Main()
         {
             InitializeComponent();
