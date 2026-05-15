@@ -22,9 +22,10 @@ namespace Dynamics_Markov.Pages
     public partial class Main : Page
     {
         public MainWindow mainWindow;
-        public Main()
+        public Main(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
         }
         private void OpenPageChart(object sender, RoutedEventArgs e)
         {

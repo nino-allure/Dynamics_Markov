@@ -25,6 +25,7 @@ namespace Dynamics_Markov.Pages
         public double actualHeightCanvas = 0;
         public double maxValue = 0;
         double averageValue = 0;
+        public Line averageLine;
         public MainWindow mainWindow;
         public Chart(MainWindow mainWindow)
         {
@@ -32,7 +33,7 @@ namespace Dynamics_Markov.Pages
             this.mainWindow = mainWindow;
             actualHeightCanvas = mainWindow.Height - 50d;
 
-            dispatherTimer.Interval = new TimeSpan(0, 0, 2);
+            dispatherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatherTimer.Tick += CreateNewValue;
             dispatherTimer.Start();
 
@@ -74,6 +75,12 @@ namespace Dynamics_Markov.Pages
                 mainWindow.pointsInfo[i].line = line;
                 canvas.Children.Add(line);
             }
+            averageValue = 0;
+            for (int i = 0; i < mainWindow.pointsInfo.Count; i++)
+                averageValue += mainWindow.pointsInfo[i].value;
+            averageValue = averageValue / mainWindow.pointsInfo.Count;
+
+            DrawAverageLine();
         }
         public void CreatePoint()
         {
@@ -85,6 +92,13 @@ namespace Dynamics_Markov.Pages
             line.StrokeThickness = 2;
             mainWindow.pointsInfo[mainWindow.pointsInfo.Count - 1].line = line;
             canvas.Children.Add(line);
+
+            averageValue = 0;
+            for (int i = 0; i < mainWindow.pointsInfo.Count; i++)
+                averageValue += mainWindow.pointsInfo[i].value;
+            averageValue = averageValue / mainWindow.pointsInfo.Count;
+
+            DrawAverageLine();
         }
         public void ControlCreateChart()
         {
@@ -125,6 +139,27 @@ namespace Dynamics_Markov.Pages
 
             CreateChart();
             ColorChart();
+
+            DrawAverageLine();
+        }
+        public void DrawAverageLine()
+        {
+            if (averageLine != null)
+                canvas.Children.Remove(averageLine);
+
+            averageLine = new Line();
+            averageLine.X1 = 0;
+            averageLine.X2 = mainWindow.pointsInfo.Count * 20;
+
+            double averageY = actualHeightCanvas - ((averageValue / maxValue) * actualHeightCanvas);
+            averageLine.Y1 = averageY;
+            averageLine.Y2 = averageY;
+
+            averageLine.StrokeThickness = 2;
+            averageLine.Stroke = Brushes.Blue;
+            averageLine.StrokeDashArray = new DoubleCollection { 5, 5 };
+
+            canvas.Children.Add(averageLine);
         }
     }
 }
