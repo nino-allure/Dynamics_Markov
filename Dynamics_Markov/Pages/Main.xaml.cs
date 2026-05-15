@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace Dynamics_Markov.Pages
 {
@@ -23,6 +24,12 @@ namespace Dynamics_Markov.Pages
         public Main()
         {
             InitializeComponent();
+        }
+        private void OpenPageChart(object sender, RoutedEventArgs e)
+        {
+            float value = Convert.ToInt32(tb_value.Text);
+            mainWindow.pointsInfo.Add(new Classes.PointInfo(value));
+            mainWindow.OpenPages(MainWindow.pages.chart);
         }
     }
 }
